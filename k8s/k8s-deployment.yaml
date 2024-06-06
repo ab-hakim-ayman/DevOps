@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-django-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-django-app
+  template:
+    metadata:
+      labels:
+        app: my-django-app
+    spec:
+      containers:
+      - name: my-django-app
+        image: dockerartisan/my-django-app:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE
+          value: "postgres"
+        - name: SQL_HOST
+          value: "db"
+        - name: SQL_PORT
+          value: "5432"
+        - name: SQL_DATABASE
+          value: "mydatabase"
+        - name: SQL_USER
+          value: "myuser"
+        - name: SQL_PASSWORD
+          value: "mypassword"
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.1"
+            memory: "128Mi"
